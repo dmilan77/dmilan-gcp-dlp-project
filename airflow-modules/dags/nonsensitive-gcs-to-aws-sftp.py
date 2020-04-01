@@ -13,7 +13,7 @@ from airflow.operators.bash_operator import BashOperator
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime.utcnow(),
+    # 'start_date': datetime.utcnow(),
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
@@ -33,7 +33,7 @@ copy_file_from_gcs_to_sftp = GCSToSFTPOperator(
     task_id="file-copy-gsc-to-sftp",
     gcs_bucket='dlp-nonsensitive-data-bucket-cust01',
     gcs_dest='sample_n01.txt',
-    sftp_dest_path='/home/ec2-user/from-gcp',
+    sftp_dest_path='/home/ec2-user/from-gcp/sample_n01.txt',
     google_cloud_storage_conn_id='my_gcp_conn',
     sftp_conn_id='my_sftp_conn'
 

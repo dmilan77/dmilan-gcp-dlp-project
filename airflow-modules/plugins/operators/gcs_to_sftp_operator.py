@@ -78,9 +78,12 @@ class GCSToSFTPOperator(BaseOperator):
         sftp_client = ssh_hook.get_conn().open_sftp()
 
         with NamedTemporaryFile("w") as f:
+            filename = f.name
             gcs_hook.download(
                 bucket=self.gcs_bucket,
                 object=self.gcs_dest,   
-                filename=f.name
+                filename=filename
             )
-            sftp_client.put(f.name,self.sftp_dest_path)
+            file_msg = "from {0} to {1}".format(filename, self.sftp_dest_path)
+            self.log.info("Starting to transfer file %s", file_msg)
+            sftp_client.put(filename, self.sftp_dest_path, confirm=True)
